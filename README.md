@@ -1,6 +1,6 @@
 # ECS Pong
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs-demo)](https://goreportcard.com/report/github.com/andygeiss/ecs-demo)
+[![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs-pong)](https://goreportcard.com/report/github.com/andygeiss/ecs-pong)
 
 A basic demonstration of using an Entity Component System for Game Development.
 
