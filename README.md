@@ -18,7 +18,7 @@ A basic demonstration of using an Entity Component System for Game Development.
 
 **From Source**
 
-    git clone github.com/andygeiss/ecs-pong.git
+    git clone https://github.com/andygeiss/ecs-pong.git
     cd ecs-pong
     go install
 
