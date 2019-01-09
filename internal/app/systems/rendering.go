@@ -96,7 +96,7 @@ func (s *rendering) renderScoreIfPresent(entity *ecs.Entity) {
 	)
 }
 
-func (s *rendering) renderTextureIfPresent(entity *ecs.Entity, textures map[string]rl.Texture2D) (present bool) {
+func (s *rendering) renderTextureIfPresent(entity *ecs.Entity) (present bool) {
 	position := entity.Get("position").(*components.Position)
 	size := entity.Get("size").(*components.Size)
 	texture := entity.Get("texture")
@@ -104,9 +104,10 @@ func (s *rendering) renderTextureIfPresent(entity *ecs.Entity, textures map[stri
 		return false
 	}
 	fileName := texture.(*components.Texture).Filename
-	tx, exists := textures[fileName]
+	tx, exists := s.textures[fileName]
 	if !exists {
-		textures[fileName] = rl.LoadTexture(fileName)
+		s.textures[fileName] = rl.LoadTexture(fileName)
+		tx = s.textures[fileName]
 	}
 	rl.DrawTextureRec(
 		tx,
