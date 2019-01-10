@@ -1,11 +1,11 @@
 package systems
 
 import (
+	"fmt"
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs-pong/internal/app/components"
+	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
+	"github.com/andygeiss/ecs/components"
 	"github.com/gen2brain/raylib-go/raylib"
-	"log"
-	"time"
 )
 
 // Score ...
@@ -18,11 +18,30 @@ func NewScore() ecs.System {
 
 // Process ...
 func (s *Score) Process(entityManager *ecs.EntityManager) {
-	for _, e := range entityManager.FilterBy("score") {
-		if s.entityWins(e) {
-			s.showWinnerText(e)
-			s.waitAndResetScores(entityManager)
-		}
+	if rl.WindowShouldClose() {
+		return
+	}
+	if ecs.ShouldEnginePause {
+		return
+	}
+	scoreboard := entityManager.Get("scoreboard")
+	score := scoreboard.Get("score").(*myComponents.Score)
+	text := scoreboard.Get("text").(*components.Text)
+	if score.Enemy >= 10 {
+		text.Content = "Enemy Wins!"
+		text.Color = rl.Red
+		score.Enemy = 0
+		score.Player = 0
+		ecs.ShouldEnginePause = true
+	} else if score.Player >= 10 {
+		text.Content = "Player Wins!"
+		text.Color = rl.Green
+		score.Enemy = 0
+		score.Player = 0
+		ecs.ShouldEnginePause = true
+	} else {
+		text.Content = fmt.Sprintf("%d : %d", score.Player, score.Enemy)
+		text.Color = rl.White
 	}
 }
 
@@ -31,28 +50,3 @@ func (s *Score) Setup() {}
 
 // Teardown ...
 func (s *Score) Teardown() {}
-
-func (s *Score) entityWins(entity *ecs.Entity) (win bool) {
-	score := entity.Get("score").(*components.Score)
-	if score.Value >= 10 {
-		return true
-	}
-	return false
-}
-
-func (s *Score) showWinnerText(entity *ecs.Entity) {
-	score := entity.Get("score").(*components.Score)
-	log.Printf("%v", score)
-	textSize := int32(50)
-	rl.BeginDrawing()
-	rl.DrawText(score.Text, score.X, score.Y, textSize, rl.Red)
-	rl.EndDrawing()
-}
-
-func (s *Score) waitAndResetScores(entityManager *ecs.EntityManager) {
-	time.Sleep(time.Second * 3)
-	for _, e := range entityManager.FilterBy("score") {
-		score := e.Get("score").(*components.Score)
-		score.Value = 0
-	}
-}

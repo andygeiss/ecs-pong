@@ -2,8 +2,10 @@ package game
 
 import (
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs-pong/internal/app/entities"
-	"github.com/andygeiss/ecs-pong/internal/app/systems"
+	myEntities "github.com/andygeiss/ecs-pong/internal/app/entities"
+	mySystems "github.com/andygeiss/ecs-pong/internal/app/systems"
+	"github.com/andygeiss/ecs/systems"
+	"github.com/gen2brain/raylib-go/raylib"
 )
 
 const (
@@ -20,9 +22,10 @@ const (
 func NewEntityManager() (entityManager *ecs.EntityManager) {
 	entityManager = ecs.NewEntityManager()
 	entityManager.Add(
-		entities.NewBall("ball", windowWidth/2, windowHeight/2, ballWidth, ballHeight),
-		entities.NewPlayer("player", 10, windowHeight/2, paddleWidth, paddleHeight),
-		entities.NewEnemy("enemy", windowWidth-paddleWidth-10, windowHeight/2, paddleWidth, paddleHeight),
+		myEntities.NewBall("ball", windowWidth/2, windowHeight/2, ballWidth, ballHeight),
+		myEntities.NewPlayer("player", 10, windowHeight/2, paddleWidth, paddleHeight),
+		myEntities.NewEnemy("enemy", windowWidth-paddleWidth-10, windowHeight/2, paddleWidth, paddleHeight),
+		myEntities.NewScoreboard("scoreboard", 0, 0, windowWidth, 0),
 	)
 	return
 }
@@ -31,13 +34,13 @@ func NewEntityManager() (entityManager *ecs.EntityManager) {
 func NewSystemsManager() (systemManager *ecs.SystemManager) {
 	systemManager = ecs.NewSystemManager()
 	systemManager.Add(
-		systems.NewAI(),
-		systems.NewInput(),
-		systems.NewCollision(windowWidth, windowHeight),
-		systems.NewMovement(),
-		systems.NewRendering(windowWidth, windowHeight, title),
-		systems.NewScore(),
+		mySystems.NewAI(),
+		mySystems.NewInput(),
+		mySystems.NewCollision(windowWidth, windowHeight),
+		mySystems.NewScore(),
 		systems.NewAudio(),
+		systems.NewMovement(),
+		systems.NewRendering(windowWidth, windowHeight, title, rl.Beige),
 	)
 	return
 }

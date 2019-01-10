@@ -1,11 +1,9 @@
 package components
 
-// Score contains the game score value, winning text and its position on the screen.
+// Score contains the game score value for the enemy and player.
 type Score struct {
-	Text  string
-	Value int
-	X     int32
-	Y     int32
+	Enemy int32
+	Player int32
 }
 
 // Name ...

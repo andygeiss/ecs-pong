@@ -2,8 +2,8 @@ package components
 
 // Input stores the current user input.
 type Input struct {
-	Down bool
-	Up   bool
+	Down  bool
+	Up    bool
 }
 
 // Name ...

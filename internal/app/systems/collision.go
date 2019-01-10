@@ -2,7 +2,8 @@ package systems
 
 import (
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs-pong/internal/app/components"
+	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
+	"github.com/andygeiss/ecs/components"
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -22,19 +23,26 @@ func NewCollision(windowWidth, windowHeight int32) ecs.System {
 
 // Process ...
 func (s *Collision) Process(entityManager *ecs.EntityManager) {
+	if rl.WindowShouldClose() {
+		return
+	}
+	if ecs.ShouldEnginePause {
+		return
+	}
 	for _, e := range entityManager.FilterBy("position", "size", "velocity") {
 		switch e.Id {
 		case "ball":
 			enemy := entityManager.Get("enemy")
 			player := entityManager.Get("player")
+			scoreboard := entityManager.Get("scoreboard")
 			if s.hasCollisionWithEnemy(e, enemy) ||
 				s.hasCollisionWithPlayer(e, player) ||
 				s.hasCollisionWithWindowBottom(e) ||
 				s.hasCollisionWithWindowTop(e) {
 				s.handleCollisionSoundIfPresent(e)
 			}
-			s.handleEnemyScore(e, enemy)
-			s.handlePlayerScore(e, player)
+			s.handleEnemyScore(e, enemy, scoreboard)
+			s.handlePlayerScore(e, player, scoreboard)
 		case "enemy", "player":
 			s.blockWindowBottom(e)
 			s.blockWindowTop(e)
@@ -84,7 +92,7 @@ func (s *Collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision
 	ballRect := s.getEntityRect(ball)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
 	enemyRect := s.getEntityRect(enemy)
-	enemyAI := enemy.Get("ai").(*components.AI)
+	enemyAI := enemy.Get("ai").(*myComponents.AI)
 	if rl.CheckCollisionRecs(ballRect, enemyRect) {
 		ballVelocity.X *= -1
 		if enemyAI.Down && ballVelocity.Y > 0 {
@@ -107,7 +115,7 @@ func (s *Collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollisi
 	ballRect := s.getEntityRect(ball)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
 	playerRect := s.getEntityRect(player)
-	playerInput := player.Get("input").(*components.Input)
+	playerInput := player.Get("input").(*myComponents.Input)
 	if rl.CheckCollisionRecs(ballRect, playerRect) {
 		ballVelocity.X *= -1
 		if playerInput.Down && ballVelocity.Y > 0 {
@@ -147,26 +155,26 @@ func (s *Collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision 
 	return false
 }
 
-func (s *Collision) handleEnemyScore(ball, enemy *ecs.Entity) {
+func (s *Collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
 	position := ball.Get("position").(*components.Position)
 	velocity := ball.Get("velocity").(*components.Velocity)
-	score := enemy.Get("score").(*components.Score)
+	score := scoreboard.Get("score").(*myComponents.Score)
 	if position.X+velocity.X <= 0 {
-		score.Value++
-		velocity.X = -4
+		score.Enemy++
+		velocity.X = -3
 		velocity.Y = 2
 		position.X = float32(s.windowWidth) / 2
 		position.Y = float32(s.windowHeight) / 2
 	}
 }
 
-func (s *Collision) handlePlayerScore(ball, player *ecs.Entity) {
+func (s *Collision) handlePlayerScore(ball, player, scoreboard *ecs.Entity) {
 	position := ball.Get("position").(*components.Position)
 	velocity := ball.Get("velocity").(*components.Velocity)
-	score := player.Get("score").(*components.Score)
+	score := scoreboard.Get("score").(*myComponents.Score)
 	if position.X+velocity.X >= float32(s.windowWidth) {
-		score.Value++
-		velocity.X = 4
+		score.Player++
+		velocity.X = 3
 		velocity.Y = -2
 		position.X = float32(s.windowWidth) / 2
 		position.Y = float32(s.windowHeight) / 2

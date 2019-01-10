@@ -2,7 +2,9 @@ package systems
 
 import (
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs-pong/internal/app/components"
+	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
+	"github.com/andygeiss/ecs/components"
+	"github.com/gen2brain/raylib-go/raylib"
 )
 
 // AI ...
@@ -15,6 +17,12 @@ func NewAI() ecs.System {
 
 // Process ...
 func (s *AI) Process(entityManager *ecs.EntityManager) {
+	if rl.WindowShouldClose() {
+		return
+	}
+	if ecs.ShouldEnginePause {
+		return
+	}
 	for _, e := range entityManager.FilterBy("ai", "position", "velocity") {
 		ball := entityManager.Get("ball")
 		s.handleBallPosition(e, ball)
@@ -28,7 +36,7 @@ func (s *AI) Setup() {}
 func (s *AI) Teardown() {}
 
 func (s *AI) handleBallPosition(entity, ball *ecs.Entity) {
-	ai := entity.Get("ai").(*components.AI)
+	ai := entity.Get("ai").(*myComponents.AI)
 	ballPosition := ball.Get("position").(*components.Position)
 	position := entity.Get("position").(*components.Position)
 	velocity := entity.Get("velocity").(*components.Velocity)
@@ -41,9 +49,9 @@ func (s *AI) handleBallPosition(entity, ball *ecs.Entity) {
 		ai.Up = true
 	}
 	if ai.Down {
-		velocity.Y = 4
+		velocity.Y = 3
 	}
 	if ai.Up {
-		velocity.Y = -4
+		velocity.Y = -3
 	}
 }

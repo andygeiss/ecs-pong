@@ -2,7 +2,7 @@ package entities
 
 import (
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs-pong/internal/app/components"
+	"github.com/andygeiss/ecs/components"
 )
 
 // NewBall creates a new ball with an id on a specific position x and y with a custom width and height.
@@ -19,7 +19,7 @@ func NewBall(id string, x, y, width, height float32) (ball *ecs.Entity) {
 				Filename: "",
 			},
 			&components.Texture{Filename: "assets/textures/ball.png"},
-			&components.Velocity{X: -4, Y: -2},
+			&components.Velocity{X: -3, Y: 2},
 		},
 	}
 }
