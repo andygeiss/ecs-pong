@@ -12,10 +12,24 @@ func NewScoreboard(id string, x, y, width, height float32) (player *ecs.Entity) 
 	return &ecs.Entity{
 		Id: id,
 		Components: []ecs.Component{
-			&components.Position{X: x, Y: y},
-			&components.Size{Width: width, Height: height},
-			&components.Text{Align: components.TextAlignCenter, Color: rl.Beige, FontSize: 40},
-			&myComponents.Score{Enemy: 0, Player: 0},
+			&components.Position{
+				X: x,
+				Y: y,
+			},
+			&components.Size{
+				Width:  width,
+				Height: height,
+			},
+			&components.Text{
+				Align:     components.TextAlignCenter,
+				Color:     rl.Beige,
+				FontSize:  40,
+				IsEnabled: true,
+			},
+			&myComponents.Score{
+				Enemy:  0,
+				Player: 0,
+			},
 		},
 	}
 }

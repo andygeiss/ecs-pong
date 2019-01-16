@@ -2,7 +2,7 @@ package components
 
 // Score contains the game score value for the enemy and player.
 type Score struct {
-	Enemy int32
+	Enemy  int32
 	Player int32
 }
 
