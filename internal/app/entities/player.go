@@ -2,8 +2,7 @@ package entities
 
 import (
 	"github.com/andygeiss/ecs"
-	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/andygeiss/ecs/components"
+	"github.com/andygeiss/ecs-pong/internal/app/components"
 )
 
 // NewPlayer creates a new player with an id on a specific position x and y with a custom width and height.
@@ -14,6 +13,9 @@ func NewPlayer(id string, x, y, width, height float32) (player *ecs.Entity) {
 			&components.Position{
 				X: x,
 				Y: y,
+			},
+			&components.Input{
+
 			},
 			&components.Size{
 				Width:  width,
@@ -26,7 +28,6 @@ func NewPlayer(id string, x, y, width, height float32) (player *ecs.Entity) {
 			&components.Velocity{
 				Y: 0,
 			},
-			&myComponents.Input{},
 		},
 	}
 }

@@ -2,7 +2,7 @@ package entities
 
 import (
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs/components"
+	"github.com/andygeiss/ecs-pong/internal/app/components"
 )
 
 // NewBall creates a new ball with an id on a specific position x and y with a custom width and height.

@@ -3,8 +3,7 @@ package systems
 import (
 	"fmt"
 	"github.com/andygeiss/ecs"
-	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/andygeiss/ecs/components"
+	"github.com/andygeiss/ecs-pong/internal/app/components"
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -25,7 +24,7 @@ func (s *Score) Process(entityManager *ecs.EntityManager) {
 		return
 	}
 	scoreboard := entityManager.Get("scoreboard")
-	score := scoreboard.Get("score").(*myComponents.Score)
+	score := scoreboard.Get("score").(*components.Score)
 	text := scoreboard.Get("text").(*components.Text)
 	if score.Enemy >= 10 {
 		text.Content = "Enemy Wins!"

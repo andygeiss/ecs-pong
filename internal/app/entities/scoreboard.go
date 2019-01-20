@@ -2,8 +2,7 @@ package entities
 
 import (
 	"github.com/andygeiss/ecs"
-	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/andygeiss/ecs/components"
+	"github.com/andygeiss/ecs-pong/internal/app/components"
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -26,7 +25,7 @@ func NewScoreboard(id string, x, y, width, height float32) (player *ecs.Entity) 
 				FontSize:  40,
 				IsEnabled: true,
 			},
-			&myComponents.Score{
+			&components.Score{
 				Enemy:  0,
 				Player: 0,
 			},

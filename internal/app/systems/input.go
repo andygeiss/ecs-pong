@@ -2,8 +2,7 @@ package systems
 
 import (
 	"github.com/andygeiss/ecs"
-	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/andygeiss/ecs/components"
+	"github.com/andygeiss/ecs-pong/internal/app/components"
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -33,7 +32,7 @@ func (s *Input) Setup() {}
 func (s *Input) Teardown() {}
 
 func (s *Input) handleInput(e *ecs.Entity) {
-	input := e.Get("input").(*myComponents.Input)
+	input := e.Get("input").(*components.Input)
 	velocity := e.Get("velocity").(*components.Velocity)
 	input.Down = rl.IsKeyDown(rl.KeyS)
 	input.Up = rl.IsKeyDown(rl.KeyW)

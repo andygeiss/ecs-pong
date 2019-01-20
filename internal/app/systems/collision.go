@@ -2,8 +2,7 @@ package systems
 
 import (
 	"github.com/andygeiss/ecs"
-	myComponents "github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/andygeiss/ecs/components"
+	"github.com/andygeiss/ecs-pong/internal/app/components"
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -92,7 +91,7 @@ func (s *Collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision
 	ballRect := s.getEntityRect(ball)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
 	enemyRect := s.getEntityRect(enemy)
-	enemyAI := enemy.Get("ai").(*myComponents.AI)
+	enemyAI := enemy.Get("ai").(*components.AI)
 	if rl.CheckCollisionRecs(ballRect, enemyRect) {
 		ballVelocity.X *= -1
 		if enemyAI.Down && ballVelocity.Y > 0 {
@@ -115,7 +114,7 @@ func (s *Collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollisi
 	ballRect := s.getEntityRect(ball)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
 	playerRect := s.getEntityRect(player)
-	playerInput := player.Get("input").(*myComponents.Input)
+	playerInput := player.Get("input").(*components.Input)
 	if rl.CheckCollisionRecs(ballRect, playerRect) {
 		ballVelocity.X *= -1
 		if playerInput.Down && ballVelocity.Y > 0 {
@@ -158,7 +157,7 @@ func (s *Collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision 
 func (s *Collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
 	position := ball.Get("position").(*components.Position)
 	velocity := ball.Get("velocity").(*components.Velocity)
-	score := scoreboard.Get("score").(*myComponents.Score)
+	score := scoreboard.Get("score").(*components.Score)
 	if position.X+velocity.X <= 0 {
 		score.Enemy++
 		velocity.X = -3
@@ -171,7 +170,7 @@ func (s *Collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
 func (s *Collision) handlePlayerScore(ball, player, scoreboard *ecs.Entity) {
 	position := ball.Get("position").(*components.Position)
 	velocity := ball.Get("velocity").(*components.Velocity)
-	score := scoreboard.Get("score").(*myComponents.Score)
+	score := scoreboard.Get("score").(*components.Score)
 	if position.X+velocity.X >= float32(s.windowWidth) {
 		score.Player++
 		velocity.X = 3
