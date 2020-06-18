@@ -2,7 +2,6 @@ package systems_test
 
 import (
 	"github.com/andygeiss/assert"
-	"github.com/andygeiss/assert/is"
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
 	"github.com/andygeiss/ecs-pong/internal/app/systems"
@@ -20,8 +19,8 @@ func TestMovement_Process_Position_Should_Not_Be_Changed_With_Velocity_Y_0(t *te
 	em.Add(player)
 	s := systems.NewMovement()
 	s.Process(em)
-	assert.That(t, player.Components[0].(*components.Position).X, is.Equal(float32(0)))
-	assert.That(t, player.Components[0].(*components.Position).Y, is.Equal(float32(0)))
+	assert.That("position x should be 0", t, player.Components[0].(*components.Position).X, 0)
+	assert.That("position y should be 0", t, player.Components[0].(*components.Position).Y, 0)
 }
 
 func TestMovement_Process_Position_Should_Be_Changed_To_Y_1_With_Velocity_Y_1(t *testing.T) {
@@ -35,8 +34,8 @@ func TestMovement_Process_Position_Should_Be_Changed_To_Y_1_With_Velocity_Y_1(t 
 	em.Add(player)
 	s := systems.NewMovement()
 	s.Process(em)
-	assert.That(t, player.Components[0].(*components.Position).X, is.Equal(float32(0)))
-	assert.That(t, player.Components[0].(*components.Position).Y, is.Equal(float32(1)))
+	assert.That("position x should be 0", t, player.Components[0].(*components.Position).X, 0)
+	assert.That("position y should be 1", t, player.Components[0].(*components.Position).Y, 1)
 }
 
 func TestMovement_Process_Position_Should_Be_Changed_To_Y_Minus_1_With_Velocity_Y_Minus_1(t *testing.T) {
@@ -50,6 +49,6 @@ func TestMovement_Process_Position_Should_Be_Changed_To_Y_Minus_1_With_Velocity_
 	em.Add(player)
 	s := systems.NewMovement()
 	s.Process(em)
-	assert.That(t, player.Components[0].(*components.Position).X, is.Equal(float32(0)))
-	assert.That(t, player.Components[0].(*components.Position).Y, is.Equal(float32(-1)))
+	assert.That("position x should be 0", t, player.Components[0].(*components.Position).X, 0)
+	assert.That("position y should be -1", t, player.Components[0].(*components.Position).Y, -1)
 }

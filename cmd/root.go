@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"github.com/andygeiss/check"
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/game"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 var rootCmd = &cobra.Command{
@@ -23,6 +23,7 @@ var rootCmd = &cobra.Command{
 
 // Execute ...
 func Execute() {
-	err := rootCmd.Execute()
-	check.Fatal(err)
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatal(err)
+	}
 }

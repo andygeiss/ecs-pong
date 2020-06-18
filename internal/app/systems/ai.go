@@ -17,6 +17,7 @@ func NewAI() ecs.System {
 // Process ...
 func (s *AI) Process(entityManager *ecs.EntityManager) {
 	if rl.WindowShouldClose() {
+		ecs.ShouldEngineStop = true
 		return
 	}
 	if ecs.ShouldEnginePause {
@@ -48,9 +49,9 @@ func (s *AI) handleBallPosition(entity, ball *ecs.Entity) {
 		ai.Up = true
 	}
 	if ai.Down {
-		velocity.Y = 3
+		velocity.Y = 2
 	}
 	if ai.Up {
-		velocity.Y = -3
+		velocity.Y = -2
 	}
 }

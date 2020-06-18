@@ -57,7 +57,7 @@ func (s *rendering) Process(entityManager *ecs.EntityManager) {
 func (s *rendering) Setup() {
 	rl.InitWindow(s.windowWidth, s.windowHeight, s.title)
 	s.camera = rl.NewCamera2D(
-		rl.NewVector2(0, 0),
+		rl.NewVector2(float32(s.windowWidth/2), float32(s.windowHeight/2)),
 		rl.NewVector2(float32(s.windowWidth/2), float32(s.windowHeight/2)),
 		0.0,
 		1.0,

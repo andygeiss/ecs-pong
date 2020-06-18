@@ -23,6 +23,7 @@ func NewCollision(windowWidth, windowHeight int32) ecs.System {
 // Process ...
 func (s *Collision) Process(entityManager *ecs.EntityManager) {
 	if rl.WindowShouldClose() {
+		ecs.ShouldEngineStop = true
 		return
 	}
 	if ecs.ShouldEnginePause {

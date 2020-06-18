@@ -3,7 +3,6 @@ package systems
 import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/gen2brain/raylib-go/raylib"
 )
 
 // Movement ...
@@ -16,10 +15,6 @@ func NewMovement() ecs.System {
 
 // Process ...
 func (s *Movement) Process(entityManager *ecs.EntityManager) {
-	if rl.WindowShouldClose() {
-		ecs.ShouldEngineStop = true
-		return
-	}
 	if ecs.ShouldEnginePause {
 		return
 	}
