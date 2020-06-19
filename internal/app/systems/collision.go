@@ -21,7 +21,7 @@ func NewCollision(windowWidth, windowHeight int32) ecs.System {
 }
 
 // Process ...
-func (s *Collision) Process(entityManager *ecs.EntityManager) {
+func (s *Collision) Process(entityManager *ecs.EntityManager) (state int) {
 	for _, e := range entityManager.FilterBy("position", "size", "velocity") {
 		switch e.Id {
 		case "ball":
@@ -41,6 +41,7 @@ func (s *Collision) Process(entityManager *ecs.EntityManager) {
 			s.blockWindowTop(e)
 		}
 	}
+	return ecs.StateEngineContinue
 }
 
 // Setup ...

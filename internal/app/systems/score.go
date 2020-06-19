@@ -21,7 +21,7 @@ func NewScore(winScore int32) ecs.System {
 }
 
 // Process ...
-func (s *Score) Process(entityManager *ecs.EntityManager) {
+func (s *Score) Process(entityManager *ecs.EntityManager) (state int)  {
 	scoreboard := entityManager.Get("scoreboard")
 	score := scoreboard.Get("score").(*components.Score)
 	scoreboardText := scoreboard.Get("text").(*components.Text)
@@ -44,6 +44,7 @@ func (s *Score) Process(entityManager *ecs.EntityManager) {
 		scoreboardText.Content = fmt.Sprintf("%d : %d", score.Player, score.Enemy)
 		scoreboardText.Color = rl.White
 	}
+	return ecs.StateEngineContinue
 }
 
 // Setup ...

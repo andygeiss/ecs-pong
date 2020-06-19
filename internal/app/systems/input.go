@@ -15,10 +15,11 @@ func NewInput() ecs.System {
 }
 
 // Process ...
-func (s *Input) Process(entityManager *ecs.EntityManager) {
+func (s *Input) Process(entityManager *ecs.EntityManager) (state int)  {
 	for _, e := range entityManager.FilterBy("input", "velocity") {
 		s.handleInput(e)
 	}
+	return ecs.StateEngineContinue
 }
 
 // Setup ...

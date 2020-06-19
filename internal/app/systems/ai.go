@@ -14,11 +14,12 @@ func NewAI() ecs.System {
 }
 
 // Process ...
-func (s *AI) Process(entityManager *ecs.EntityManager) {
+func (s *AI) Process(entityManager *ecs.EntityManager) (state int) {
 	ball := entityManager.Get("ball")
 	for _, e := range entityManager.FilterBy("ai", "position", "velocity") {
 		s.handleBallPosition(e, ball)
 	}
+	return ecs.StateEngineContinue
 }
 
 // Setup ...

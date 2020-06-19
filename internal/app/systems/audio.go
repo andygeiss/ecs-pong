@@ -19,7 +19,7 @@ func NewAudio() ecs.System {
 }
 
 // Process ...
-func (s *Audio) Process(entityManager *ecs.EntityManager) {
+func (s *Audio) Process(entityManager *ecs.EntityManager) (state int)  {
 	for _, e := range entityManager.FilterBy("sound") {
 		sound := e.Get("sound").(*components.Sound)
 		fileName := sound.Filename
@@ -46,6 +46,7 @@ func (s *Audio) Process(entityManager *ecs.EntityManager) {
 			sound.Filename = ""
 		}()
 	}
+	return ecs.StateEngineContinue
 }
 
 // Setup ...

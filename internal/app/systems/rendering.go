@@ -31,7 +31,10 @@ func NewRendering(width, height int32, title string, background rl.Color) ecs.Sy
 }
 
 // Process ...
-func (s *rendering) Process(entityManager *ecs.EntityManager) {
+func (s *rendering) Process(entityManager *ecs.EntityManager) (state int)  {
+	if rl.WindowShouldClose() {
+		return ecs.StateEngineStop
+	}
 	rl.BeginDrawing()
 	rl.BeginMode2D(s.camera)
 	rl.ClearBackground(s.background)
@@ -57,6 +60,7 @@ func (s *rendering) Process(entityManager *ecs.EntityManager) {
 	s.toggleFullscreenIfPresent()
 	rl.EndMode2D()
 	rl.EndDrawing()
+	return ecs.StateEngineContinue
 }
 
 // Setup ...

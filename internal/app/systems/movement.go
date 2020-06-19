@@ -14,13 +14,14 @@ func NewMovement() ecs.System {
 }
 
 // Process ...
-func (s *Movement) Process(entityManager *ecs.EntityManager) {
+func (s *Movement) Process(entityManager *ecs.EntityManager) (state int)  {
 	for _, e := range entityManager.FilterBy("position", "velocity") {
 		position := e.Get("position").(*components.Position)
 		velocity := e.Get("velocity").(*components.Velocity)
 		position.X += velocity.X
 		position.Y += velocity.Y
 	}
+	return ecs.StateEngineContinue
 }
 
 // Setup ...
