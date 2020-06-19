@@ -25,6 +25,7 @@ func NewEntityManager() (entityManager *ecs.EntityManager) {
 		entities.NewPlayer("player", 10, windowHeight/2, paddleWidth, paddleHeight),
 		entities.NewEnemy("enemy", windowWidth-paddleWidth-10, windowHeight/2, paddleWidth, paddleHeight),
 		entities.NewScoreboard("scoreboard", 0, 0, windowWidth, 1),
+		entities.NewStatus("status", 0, 0, windowWidth/3, 1),
 	)
 	return
 }
@@ -36,7 +37,7 @@ func NewSystemsManager() (systemManager *ecs.SystemManager) {
 		systems.NewAI(),
 		systems.NewInput(),
 		systems.NewCollision(windowWidth, windowHeight),
-		systems.NewScore(),
+		systems.NewScore(5),
 		systems.NewAudio(),
 		systems.NewMovement(),
 		systems.NewRendering(windowWidth, windowHeight, title, rl.Beige),

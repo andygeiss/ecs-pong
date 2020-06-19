@@ -3,7 +3,6 @@ package systems
 import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/gen2brain/raylib-go/raylib"
 )
 
 // AI ...
@@ -16,13 +15,6 @@ func NewAI() ecs.System {
 
 // Process ...
 func (s *AI) Process(entityManager *ecs.EntityManager) {
-	if rl.WindowShouldClose() {
-		ecs.ShouldEngineStop = true
-		return
-	}
-	if ecs.ShouldEnginePause {
-		return
-	}
 	ball := entityManager.Get("ball")
 	for _, e := range entityManager.FilterBy("ai", "position", "velocity") {
 		s.handleBallPosition(e, ball)

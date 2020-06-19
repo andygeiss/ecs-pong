@@ -22,13 +22,6 @@ func NewCollision(windowWidth, windowHeight int32) ecs.System {
 
 // Process ...
 func (s *Collision) Process(entityManager *ecs.EntityManager) {
-	if rl.WindowShouldClose() {
-		ecs.ShouldEngineStop = true
-		return
-	}
-	if ecs.ShouldEnginePause {
-		return
-	}
 	for _, e := range entityManager.FilterBy("position", "size", "velocity") {
 		switch e.Id {
 		case "ball":

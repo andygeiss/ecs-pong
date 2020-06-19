@@ -15,9 +15,6 @@ func NewMovement() ecs.System {
 
 // Process ...
 func (s *Movement) Process(entityManager *ecs.EntityManager) {
-	if ecs.ShouldEnginePause {
-		return
-	}
 	for _, e := range entityManager.FilterBy("position", "velocity") {
 		position := e.Get("position").(*components.Position)
 		velocity := e.Get("velocity").(*components.Velocity)

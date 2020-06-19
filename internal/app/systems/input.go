@@ -16,10 +16,6 @@ func NewInput() ecs.System {
 
 // Process ...
 func (s *Input) Process(entityManager *ecs.EntityManager) {
-	if rl.WindowShouldClose() {
-		ecs.ShouldEngineStop = true
-		return
-	}
 	for _, e := range entityManager.FilterBy("input", "velocity") {
 		s.handleInput(e)
 	}

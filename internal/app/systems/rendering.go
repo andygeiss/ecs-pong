@@ -4,6 +4,7 @@ import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
 	"github.com/gen2brain/raylib-go/raylib"
+	"time"
 )
 
 type rendering struct {
@@ -14,6 +15,7 @@ type rendering struct {
 	title        string
 	windowHeight int32
 	windowWidth  int32
+	done         chan bool
 }
 
 // NewRendering ...
@@ -30,24 +32,28 @@ func NewRendering(width, height int32, title string, background rl.Color) ecs.Sy
 
 // Process ...
 func (s *rendering) Process(entityManager *ecs.EntityManager) {
-	if rl.WindowShouldClose() {
-		ecs.ShouldEngineStop = true
-		return
-	}
 	rl.BeginDrawing()
 	rl.BeginMode2D(s.camera)
 	rl.ClearBackground(s.background)
+	// Render all entities with a position and size.
 	for _, e := range entityManager.FilterBy("position", "size") {
 		isTexturePresent := s.renderTextureIfPresent(e)
 		if !isTexturePresent {
 			s.renderBoundingBox(e)
 		}
 	}
+	// Fadeout text if timeout is reached.
+	for _, e := range entityManager.FilterBy("text", "timeout") {
+		text := e.Get("text").(*components.Text)
+		timeout := e.Get("timeout").(*components.Timeout)
+		if time.Since(timeout.CreationTime) > timeout.Duration {
+			text.Content = ""
+		}
+	}
 	// Ensure that text will always drawn on top.
 	for _, e := range entityManager.FilterBy("text") {
 		s.renderTextIfPresent(e)
 	}
-	s.renderPauseIfPresent()
 	s.toggleFullscreenIfPresent()
 	rl.EndMode2D()
 	rl.EndDrawing()
@@ -86,29 +92,6 @@ func (s *rendering) renderBoundingBox(entity *ecs.Entity) {
 		int32(size.Height),
 		rl.RayWhite,
 	)
-}
-
-func (s *rendering) renderPauseIfPresent() {
-	keyC := rl.IsKeyPressed(rl.KeyC)
-	if keyC {
-		ecs.ShouldEnginePause = false
-	}
-	keyP := rl.IsKeyPressed(rl.KeyP)
-	if keyP {
-		ecs.ShouldEnginePause = true
-	}
-	if ecs.ShouldEnginePause {
-		fontSize := int32(60)
-		text := "Press C to continue"
-		textLength := int32(rl.MeasureText(text, int32(fontSize)))
-		rl.DrawText(
-			text,
-			int32(s.windowWidth)/2-textLength/2,
-			int32(s.windowHeight)/2+fontSize/2,
-			fontSize,
-			rl.Red,
-		)
-	}
 }
 
 func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
