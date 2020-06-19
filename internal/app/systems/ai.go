@@ -5,16 +5,16 @@ import (
 	"github.com/andygeiss/ecs-pong/internal/app/components"
 )
 
-// AI ...
-type AI struct{}
+// ai ...
+type ai struct{}
 
 // NewAI ...
 func NewAI() ecs.System {
-	return &AI{}
+	return &ai{}
 }
 
 // Process ...
-func (s *AI) Process(entityManager *ecs.EntityManager) (state int) {
+func (s *ai) Process(entityManager *ecs.EntityManager) (state int) {
 	ball := entityManager.Get("ball")
 	for _, e := range entityManager.FilterBy("ai", "position", "velocity") {
 		s.handleBallPosition(e, ball)
@@ -23,12 +23,12 @@ func (s *AI) Process(entityManager *ecs.EntityManager) (state int) {
 }
 
 // Setup ...
-func (s *AI) Setup() {}
+func (s *ai) Setup() {}
 
 // Teardown ...
-func (s *AI) Teardown() {}
+func (s *ai) Teardown() {}
 
-func (s *AI) handleBallPosition(entity, ball *ecs.Entity) {
+func (s *ai) handleBallPosition(entity, ball *ecs.Entity) {
 	ai := entity.Get("ai").(*components.AI)
 	position := entity.Get("position").(*components.Position)
 	velocity := entity.Get("velocity").(*components.Velocity)

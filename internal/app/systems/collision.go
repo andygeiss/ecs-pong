@@ -6,22 +6,22 @@ import (
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
-// Collision ...
-type Collision struct {
+// collision ...
+type collision struct {
 	windowHeight int32
 	windowWidth  int32
 }
 
 // NewCollision ...
 func NewCollision(windowWidth, windowHeight int32) ecs.System {
-	return &Collision{
+	return &collision{
 		windowHeight: windowHeight,
 		windowWidth:  windowWidth,
 	}
 }
 
 // Process ...
-func (s *Collision) Process(entityManager *ecs.EntityManager) (state int) {
+func (s *collision) Process(entityManager *ecs.EntityManager) (state int) {
 	for _, e := range entityManager.FilterBy("position", "size", "velocity") {
 		switch e.Id {
 		case "ball":
@@ -45,12 +45,12 @@ func (s *Collision) Process(entityManager *ecs.EntityManager) (state int) {
 }
 
 // Setup ...
-func (s *Collision) Setup() {}
+func (s *collision) Setup() {}
 
 // Teardown ...
-func (s *Collision) Teardown() {}
+func (s *collision) Teardown() {}
 
-func (s *Collision) blockWindowBottom(entity *ecs.Entity) {
+func (s *collision) blockWindowBottom(entity *ecs.Entity) {
 	position := entity.Get("position").(*components.Position)
 	size := entity.Get("size").(*components.Size)
 	velocity := entity.Get("velocity").(*components.Velocity)
@@ -59,7 +59,7 @@ func (s *Collision) blockWindowBottom(entity *ecs.Entity) {
 	}
 }
 
-func (s *Collision) blockWindowTop(entity *ecs.Entity) {
+func (s *collision) blockWindowTop(entity *ecs.Entity) {
 	position := entity.Get("position").(*components.Position)
 	velocity := entity.Get("velocity").(*components.Velocity)
 	if position.Y+velocity.Y <= 0 {
@@ -67,13 +67,13 @@ func (s *Collision) blockWindowTop(entity *ecs.Entity) {
 	}
 }
 
-func (s *Collision) getEntityRect(entity *ecs.Entity) rl.Rectangle {
+func (s *collision) getEntityRect(entity *ecs.Entity) rl.Rectangle {
 	position := entity.Get("position").(*components.Position)
 	size := entity.Get("size").(*components.Size)
 	return rl.NewRectangle(position.X, position.Y, size.Width, size.Height)
 }
 
-func (s *Collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
+func (s *collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
 	sound := ball.Get("sound")
 	if sound == nil {
 		return
@@ -82,7 +82,7 @@ func (s *Collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
 	snd.Filename = snd.EventFilename["collision"]
 }
 
-func (s *Collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision bool) {
+func (s *collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision bool) {
 	ballRect := s.getEntityRect(ball)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
 	enemyRect := s.getEntityRect(enemy)
@@ -105,7 +105,7 @@ func (s *Collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision
 	return false
 }
 
-func (s *Collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollision bool) {
+func (s *collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollision bool) {
 	ballRect := s.getEntityRect(ball)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
 	playerRect := s.getEntityRect(player)
@@ -128,7 +128,7 @@ func (s *Collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollisi
 	return false
 }
 
-func (s *Collision) hasCollisionWithWindowBottom(entity *ecs.Entity) (hasCollision bool) {
+func (s *collision) hasCollisionWithWindowBottom(entity *ecs.Entity) (hasCollision bool) {
 	position := entity.Get("position").(*components.Position)
 	size := entity.Get("size").(*components.Size)
 	velocity := entity.Get("velocity").(*components.Velocity)
@@ -139,7 +139,7 @@ func (s *Collision) hasCollisionWithWindowBottom(entity *ecs.Entity) (hasCollisi
 	return false
 }
 
-func (s *Collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision bool) {
+func (s *collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision bool) {
 	position := entity.Get("position").(*components.Position)
 	velocity := entity.Get("velocity").(*components.Velocity)
 	if position.Y+velocity.Y <= 0 {
@@ -149,7 +149,7 @@ func (s *Collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision 
 	return false
 }
 
-func (s *Collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
+func (s *collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
 	position := ball.Get("position").(*components.Position)
 	velocity := ball.Get("velocity").(*components.Velocity)
 	score := scoreboard.Get("score").(*components.Score)
@@ -162,7 +162,7 @@ func (s *Collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
 	}
 }
 
-func (s *Collision) handlePlayerScore(ball, player, scoreboard *ecs.Entity) {
+func (s *collision) handlePlayerScore(ball, player, scoreboard *ecs.Entity) {
 	position := ball.Get("position").(*components.Position)
 	velocity := ball.Get("velocity").(*components.Velocity)
 	score := scoreboard.Get("score").(*components.Score)

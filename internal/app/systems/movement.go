@@ -5,16 +5,16 @@ import (
 	"github.com/andygeiss/ecs-pong/internal/app/components"
 )
 
-// Movement ...
-type Movement struct{}
+// movement ...
+type movement struct{}
 
 // NewMovement ...
 func NewMovement() ecs.System {
-	return &Movement{}
+	return &movement{}
 }
 
 // Process ...
-func (s *Movement) Process(entityManager *ecs.EntityManager) (state int)  {
+func (s *movement) Process(entityManager *ecs.EntityManager) (state int) {
 	for _, e := range entityManager.FilterBy("position", "velocity") {
 		position := e.Get("position").(*components.Position)
 		velocity := e.Get("velocity").(*components.Velocity)
@@ -25,7 +25,7 @@ func (s *Movement) Process(entityManager *ecs.EntityManager) (state int)  {
 }
 
 // Setup ...
-func (s *Movement) Setup() {}
+func (s *movement) Setup() {}
 
 // Teardown ...
-func (s *Movement) Teardown() {}
+func (s *movement) Teardown() {}

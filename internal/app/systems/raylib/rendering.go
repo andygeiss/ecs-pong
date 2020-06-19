@@ -1,4 +1,4 @@
-package systems
+package raylib
 
 import (
 	"github.com/andygeiss/ecs"
@@ -19,9 +19,9 @@ type rendering struct {
 }
 
 // NewRendering ...
-func NewRendering(width, height int32, title string, background rl.Color) ecs.System {
+func NewRendering(width, height int32, title string) ecs.System {
 	return &rendering{
-		background:   background,
+		background:   rl.Beige,
 		images:       map[string]*rl.Image{},
 		textures:     map[string]rl.Texture2D{},
 		title:        title,
@@ -31,7 +31,7 @@ func NewRendering(width, height int32, title string, background rl.Color) ecs.Sy
 }
 
 // Process ...
-func (s *rendering) Process(entityManager *ecs.EntityManager) (state int)  {
+func (s *rendering) Process(entityManager *ecs.EntityManager) (state int) {
 	if rl.WindowShouldClose() {
 		return ecs.StateEngineStop
 	}

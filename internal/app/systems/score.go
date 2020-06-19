@@ -8,20 +8,20 @@ import (
 	"time"
 )
 
-// Score ...
-type Score struct{
+// score ...
+type score struct {
 	winScore int32
 }
 
 // NewScore ...
 func NewScore(winScore int32) ecs.System {
-	return &Score{
+	return &score{
 		winScore: winScore,
 	}
 }
 
 // Process ...
-func (s *Score) Process(entityManager *ecs.EntityManager) (state int)  {
+func (s *score) Process(entityManager *ecs.EntityManager) (state int) {
 	scoreboard := entityManager.Get("scoreboard")
 	score := scoreboard.Get("score").(*components.Score)
 	scoreboardText := scoreboard.Get("text").(*components.Text)
@@ -48,7 +48,7 @@ func (s *Score) Process(entityManager *ecs.EntityManager) (state int)  {
 }
 
 // Setup ...
-func (s *Score) Setup() {}
+func (s *score) Setup() {}
 
 // Teardown ...
-func (s *Score) Teardown() {}
+func (s *score) Teardown() {}

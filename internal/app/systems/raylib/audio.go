@@ -1,4 +1,4 @@
-package systems
+package raylib
 
 import (
 	"github.com/andygeiss/ecs"
@@ -19,7 +19,7 @@ func NewAudio() ecs.System {
 }
 
 // Process ...
-func (s *Audio) Process(entityManager *ecs.EntityManager) (state int)  {
+func (s *Audio) Process(entityManager *ecs.EntityManager) (state int) {
 	for _, e := range entityManager.FilterBy("sound") {
 		sound := e.Get("sound").(*components.Sound)
 		fileName := sound.Filename

@@ -6,16 +6,16 @@ import (
 	"github.com/gen2brain/raylib-go/raylib"
 )
 
-// Input ...
-type Input struct{}
+// input ...
+type input struct{}
 
 // NewInput ...
 func NewInput() ecs.System {
-	return &Input{}
+	return &input{}
 }
 
 // Process ...
-func (s *Input) Process(entityManager *ecs.EntityManager) (state int)  {
+func (s *input) Process(entityManager *ecs.EntityManager) (state int) {
 	for _, e := range entityManager.FilterBy("input", "velocity") {
 		s.handleInput(e)
 	}
@@ -23,12 +23,12 @@ func (s *Input) Process(entityManager *ecs.EntityManager) (state int)  {
 }
 
 // Setup ...
-func (s *Input) Setup() {}
+func (s *input) Setup() {}
 
 // Teardown ...
-func (s *Input) Teardown() {}
+func (s *input) Teardown() {}
 
-func (s *Input) handleInput(e *ecs.Entity) {
+func (s *input) handleInput(e *ecs.Entity) {
 	input := e.Get("input").(*components.Input)
 	velocity := e.Get("velocity").(*components.Velocity)
 	input.Down = rl.IsKeyDown(rl.KeyS)
