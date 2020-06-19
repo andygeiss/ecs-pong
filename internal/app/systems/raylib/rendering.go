@@ -134,7 +134,7 @@ func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
 		x,
 		y,
 		txt.FontSize,
-		txt.Color,
+		rgbUint32ToColor(txt.Color),
 	)
 	return true
 }
@@ -171,4 +171,8 @@ func (s *rendering) toggleFullscreenIfPresent() {
 	if rl.IsKeyPressed(rl.KeyT) {
 		rl.ToggleFullscreen()
 	}
+}
+
+func rgbUint32ToColor(rgb uint32) rl.Color {
+	return rl.Color{R: uint8(rgb >> 24), G: uint8(rgb >> 16 & 0x000000ff), B: uint8(rgb >> 8 & 0x000000ff), A: uint8(rgb & 0x000000ff)}
 }

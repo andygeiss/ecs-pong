@@ -3,7 +3,6 @@ package entities
 import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
-	rl "github.com/gen2brain/raylib-go/raylib"
 	"time"
 )
 
@@ -22,7 +21,6 @@ func NewStatus(id string, x, y, width, height float32) (player *ecs.Entity) {
 			},
 			&components.Text{
 				Align:     components.TextAlignCenter,
-				Color:     rl.Beige,
 				FontSize:  40,
 				IsEnabled: true,
 			},

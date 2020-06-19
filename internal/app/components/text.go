@@ -1,7 +1,5 @@
 package components
 
-import "github.com/gen2brain/raylib-go/raylib"
-
 const (
 	TextAlignBottom = 0
 	TextAlignCenter = 1
@@ -13,7 +11,7 @@ const (
 // Text ...
 type Text struct {
 	Align     int
-	Color     rl.Color
+	Color     uint32
 	Content   string
 	FontSize  int32
 	IsEnabled bool

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/gen2brain/raylib-go/raylib"
 	"time"
 )
 
@@ -30,19 +29,19 @@ func (s *score) Process(entityManager *ecs.EntityManager) (state int) {
 	statusText := status.Get("text").(*components.Text)
 	if score.Enemy >= s.winScore {
 		statusText.Content = "Enemy Wins!"
-		statusText.Color = rl.Red
+		statusText.Color = 0xff0000ff // red
 		timeout.CreationTime = time.Now()
 		score.Enemy = 0
 		score.Player = 0
 	} else if score.Player >= s.winScore {
 		statusText.Content = "Player Wins!"
-		statusText.Color = rl.Green
+		statusText.Color = 0x00ff00ff // green
 		timeout.CreationTime = time.Now()
 		score.Enemy = 0
 		score.Player = 0
 	} else {
 		scoreboardText.Content = fmt.Sprintf("%d : %d", score.Player, score.Enemy)
-		scoreboardText.Color = rl.White
+		scoreboardText.Color = 0xffffffff // white
 	}
 	return ecs.StateEngineContinue
 }

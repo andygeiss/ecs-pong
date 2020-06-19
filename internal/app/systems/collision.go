@@ -3,7 +3,6 @@ package systems
 import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs-pong/internal/app/components"
-	"github.com/gen2brain/raylib-go/raylib"
 )
 
 // collision ...
@@ -67,12 +66,6 @@ func (s *collision) blockWindowTop(entity *ecs.Entity) {
 	}
 }
 
-func (s *collision) getEntityRect(entity *ecs.Entity) rl.Rectangle {
-	position := entity.Get("position").(*components.Position)
-	size := entity.Get("size").(*components.Size)
-	return rl.NewRectangle(position.X, position.Y, size.Width, size.Height)
-}
-
 func (s *collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
 	sound := ball.Get("sound")
 	if sound == nil {
@@ -83,22 +76,26 @@ func (s *collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
 }
 
 func (s *collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision bool) {
-	ballRect := s.getEntityRect(ball)
+	ballPos := ball.Get("position").(*components.Position)
+	ballSize := ball.Get("size").(*components.Size)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
-	enemyRect := s.getEntityRect(enemy)
+	enemyPos := enemy.Get("position").(*components.Position)
+	enemySize := enemy.Get("size").(*components.Size)
 	enemyAI := enemy.Get("ai").(*components.AI)
-	if rl.CheckCollisionRecs(ballRect, enemyRect) {
+	if ballPos.X+ballSize.Width >= enemyPos.X &&
+		ballPos.Y >= enemyPos.Y &&
+		ballPos.Y+ballSize.Height <= enemyPos.Y+enemySize.Height {
 		ballVelocity.X *= -1
 		if enemyAI.Down && ballVelocity.Y > 0 {
-			ballVelocity.Y *= 2
+			ballVelocity.Y *= 1.5
 		} else if enemyAI.Down && ballVelocity.Y < 0 {
-			ballVelocity.Y *= 0.5
-			ballVelocity.X *= 1.5
+			ballVelocity.Y *= -0.75
+			ballVelocity.X *= 1.25
 		} else if enemyAI.Up && ballVelocity.Y < 0 {
-			ballVelocity.Y *= 2
+			ballVelocity.Y *= 1.5
 		} else if enemyAI.Up && ballVelocity.Y > 0 {
-			ballVelocity.Y *= 0.5
-			ballVelocity.X *= 1.5
+			ballVelocity.Y *= -0.75
+			ballVelocity.X *= 1.25
 		}
 		return true
 	}
@@ -106,22 +103,26 @@ func (s *collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision
 }
 
 func (s *collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollision bool) {
-	ballRect := s.getEntityRect(ball)
+	ballPos := ball.Get("position").(*components.Position)
+	ballSize := ball.Get("size").(*components.Size)
 	ballVelocity := ball.Get("velocity").(*components.Velocity)
-	playerRect := s.getEntityRect(player)
+	playerPos := player.Get("position").(*components.Position)
+	playerSize := player.Get("size").(*components.Size)
 	playerInput := player.Get("input").(*components.Input)
-	if rl.CheckCollisionRecs(ballRect, playerRect) {
+	if ballPos.X <= playerPos.X + playerSize.Width &&
+		ballPos.Y >= playerPos.Y &&
+		ballPos.Y+ballSize.Height <= playerPos.Y+playerSize.Height {
 		ballVelocity.X *= -1
 		if playerInput.Down && ballVelocity.Y > 0 {
-			ballVelocity.Y *= 2
+			ballVelocity.Y *= 1.5
 		} else if playerInput.Down && ballVelocity.Y < 0 {
-			ballVelocity.Y *= -0.5
-			ballVelocity.X *= 1.5
+			ballVelocity.Y *= -0.75
+			ballVelocity.X *= 1.25
 		} else if playerInput.Up && ballVelocity.Y < 0 {
-			ballVelocity.Y *= 2
+			ballVelocity.Y *= 1.5
 		} else if playerInput.Up && ballVelocity.Y > 0 {
-			ballVelocity.Y *= -0.5
-			ballVelocity.X *= 1.5
+			ballVelocity.Y *= -0.75
+			ballVelocity.X *= 1.25
 		}
 		return true
 	}

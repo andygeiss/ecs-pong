@@ -1,4 +1,4 @@
-package systems
+package raylib
 
 import (
 	"github.com/andygeiss/ecs"
