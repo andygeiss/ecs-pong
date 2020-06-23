@@ -17,7 +17,7 @@ type Text struct {
 	IsEnabled bool
 }
 
-// Name ...
-func (t *Text) Name() string {
-	return "text"
+// Mask ...
+func (i *Text) Mask() uint64 {
+	return MaskText
 }

@@ -7,7 +7,7 @@ type Velocity struct {
 	IsEnabled bool
 }
 
-// Name ...
-func (v *Velocity) Name() string {
-	return "velocity"
+// Mask ...
+func (i *Velocity) Mask() uint64 {
+	return MaskVelocity
 }

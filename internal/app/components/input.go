@@ -6,7 +6,7 @@ type Input struct {
 	Up   bool
 }
 
-// Name ...
-func (i *Input) Name() string {
-	return "input"
+// Mask ...
+func (i *Input) Mask() uint64 {
+	return MaskInput
 }

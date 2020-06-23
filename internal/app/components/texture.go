@@ -6,7 +6,7 @@ type Texture struct {
 	IsEnabled bool
 }
 
-// Name ...
-func (t *Texture) Name() string {
-	return "texture"
+// Mask ...
+func (i *Texture) Mask() uint64 {
+	return MaskTexture
 }

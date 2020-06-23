@@ -15,9 +15,9 @@ func NewMovement() ecs.System {
 
 // Process ...
 func (s *movement) Process(entityManager *ecs.EntityManager) (state int) {
-	for _, e := range entityManager.FilterBy("position", "velocity") {
-		position := e.Get("position").(*components.Position)
-		velocity := e.Get("velocity").(*components.Velocity)
+	for _, e := range entityManager.FilterByMask(components.MaskPosition | components.MaskVelocity) {
+		position := e.Get(components.MaskPosition).(*components.Position)
+		velocity := e.Get(components.MaskVelocity).(*components.Velocity)
 		position.X += velocity.X
 		position.Y += velocity.Y
 	}

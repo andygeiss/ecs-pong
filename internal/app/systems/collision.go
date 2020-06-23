@@ -21,7 +21,7 @@ func NewCollision(windowWidth, windowHeight int32) ecs.System {
 
 // Process ...
 func (s *collision) Process(entityManager *ecs.EntityManager) (state int) {
-	for _, e := range entityManager.FilterBy("position", "size", "velocity") {
+	for _, e := range entityManager.FilterByMask(components.MaskPosition | components.MaskSize | components.MaskVelocity) {
 		switch e.Id {
 		case "ball":
 			enemy := entityManager.Get("enemy")
@@ -50,24 +50,24 @@ func (s *collision) Setup() {}
 func (s *collision) Teardown() {}
 
 func (s *collision) blockWindowBottom(entity *ecs.Entity) {
-	position := entity.Get("position").(*components.Position)
-	size := entity.Get("size").(*components.Size)
-	velocity := entity.Get("velocity").(*components.Velocity)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	size := entity.Get(components.MaskSize).(*components.Size)
+	velocity := entity.Get(components.MaskVelocity).(*components.Velocity)
 	if position.Y+velocity.Y+size.Height >= float32(s.windowHeight) {
 		velocity.Y = 0
 	}
 }
 
 func (s *collision) blockWindowTop(entity *ecs.Entity) {
-	position := entity.Get("position").(*components.Position)
-	velocity := entity.Get("velocity").(*components.Velocity)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	velocity := entity.Get(components.MaskVelocity).(*components.Velocity)
 	if position.Y+velocity.Y <= 0 {
 		velocity.Y = 0
 	}
 }
 
 func (s *collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
-	sound := ball.Get("sound")
+	sound := ball.Get(components.MaskSound)
 	if sound == nil {
 		return
 	}
@@ -76,12 +76,12 @@ func (s *collision) handleCollisionSoundIfPresent(ball *ecs.Entity) {
 }
 
 func (s *collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision bool) {
-	ballPos := ball.Get("position").(*components.Position)
-	ballSize := ball.Get("size").(*components.Size)
-	ballVelocity := ball.Get("velocity").(*components.Velocity)
-	enemyPos := enemy.Get("position").(*components.Position)
-	enemySize := enemy.Get("size").(*components.Size)
-	enemyAI := enemy.Get("ai").(*components.AI)
+	ballPos := ball.Get(components.MaskPosition).(*components.Position)
+	ballSize := ball.Get(components.MaskSize).(*components.Size)
+	ballVelocity := ball.Get(components.MaskVelocity).(*components.Velocity)
+	enemyPos := enemy.Get(components.MaskPosition).(*components.Position)
+	enemySize := enemy.Get(components.MaskSize).(*components.Size)
+	enemyAI := enemy.Get(components.MaskAI).(*components.AI)
 	if ballPos.X+ballSize.Width >= enemyPos.X &&
 		ballPos.Y >= enemyPos.Y &&
 		ballPos.Y+ballSize.Height <= enemyPos.Y+enemySize.Height {
@@ -103,13 +103,13 @@ func (s *collision) hasCollisionWithEnemy(ball, enemy *ecs.Entity) (hasCollision
 }
 
 func (s *collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollision bool) {
-	ballPos := ball.Get("position").(*components.Position)
-	ballSize := ball.Get("size").(*components.Size)
-	ballVelocity := ball.Get("velocity").(*components.Velocity)
-	playerPos := player.Get("position").(*components.Position)
-	playerSize := player.Get("size").(*components.Size)
-	playerInput := player.Get("input").(*components.Input)
-	if ballPos.X <= playerPos.X + playerSize.Width &&
+	ballPos := ball.Get(components.MaskPosition).(*components.Position)
+	ballSize := ball.Get(components.MaskSize).(*components.Size)
+	ballVelocity := ball.Get(components.MaskVelocity).(*components.Velocity)
+	playerPos := player.Get(components.MaskPosition).(*components.Position)
+	playerSize := player.Get(components.MaskSize).(*components.Size)
+	playerInput := player.Get(components.MaskInput).(*components.Input)
+	if ballPos.X <= playerPos.X+playerSize.Width &&
 		ballPos.Y >= playerPos.Y &&
 		ballPos.Y+ballSize.Height <= playerPos.Y+playerSize.Height {
 		ballVelocity.X *= -1
@@ -130,9 +130,9 @@ func (s *collision) hasCollisionWithPlayer(ball, player *ecs.Entity) (hasCollisi
 }
 
 func (s *collision) hasCollisionWithWindowBottom(entity *ecs.Entity) (hasCollision bool) {
-	position := entity.Get("position").(*components.Position)
-	size := entity.Get("size").(*components.Size)
-	velocity := entity.Get("velocity").(*components.Velocity)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	size := entity.Get(components.MaskSize).(*components.Size)
+	velocity := entity.Get(components.MaskVelocity).(*components.Velocity)
 	if position.Y+velocity.Y+size.Height >= float32(s.windowHeight) {
 		velocity.Y *= -1
 		return true
@@ -141,8 +141,8 @@ func (s *collision) hasCollisionWithWindowBottom(entity *ecs.Entity) (hasCollisi
 }
 
 func (s *collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision bool) {
-	position := entity.Get("position").(*components.Position)
-	velocity := entity.Get("velocity").(*components.Velocity)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	velocity := entity.Get(components.MaskVelocity).(*components.Velocity)
 	if position.Y+velocity.Y <= 0 {
 		velocity.Y *= -1
 		return true
@@ -151,9 +151,9 @@ func (s *collision) hasCollisionWithWindowTop(entity *ecs.Entity) (hasCollision 
 }
 
 func (s *collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
-	position := ball.Get("position").(*components.Position)
-	velocity := ball.Get("velocity").(*components.Velocity)
-	score := scoreboard.Get("score").(*components.Score)
+	position := ball.Get(components.MaskPosition).(*components.Position)
+	velocity := ball.Get(components.MaskVelocity).(*components.Velocity)
+	score := scoreboard.Get(components.MaskScore).(*components.Score)
 	if position.X+velocity.X <= 0 {
 		score.Enemy++
 		velocity.X = -3
@@ -164,9 +164,9 @@ func (s *collision) handleEnemyScore(ball, enemy, scoreboard *ecs.Entity) {
 }
 
 func (s *collision) handlePlayerScore(ball, player, scoreboard *ecs.Entity) {
-	position := ball.Get("position").(*components.Position)
-	velocity := ball.Get("velocity").(*components.Velocity)
-	score := scoreboard.Get("score").(*components.Score)
+	position := ball.Get(components.MaskPosition).(*components.Position)
+	velocity := ball.Get(components.MaskVelocity).(*components.Velocity)
+	score := scoreboard.Get(components.MaskScore).(*components.Score)
 	if position.X+velocity.X >= float32(s.windowWidth) {
 		score.Player++
 		velocity.X = 3

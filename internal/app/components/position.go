@@ -6,7 +6,7 @@ type Position struct {
 	Y float32
 }
 
-// Name ...
-func (p *Position) Name() string {
-	return "position"
+// Mask ...
+func (i *Position) Mask() uint64 {
+	return MaskPosition
 }

@@ -8,7 +8,7 @@ type Sound struct {
 	Volume        float32
 }
 
-// Name ...
-func (s *Sound) Name() string {
-	return "sound"
+// Mask ...
+func (i *Sound) Mask() uint64 {
+	return MaskSound
 }

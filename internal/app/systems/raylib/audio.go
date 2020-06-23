@@ -20,8 +20,8 @@ func NewAudio() ecs.System {
 
 // Process ...
 func (s *Audio) Process(entityManager *ecs.EntityManager) (state int) {
-	for _, e := range entityManager.FilterBy("sound") {
-		sound := e.Get("sound").(*components.Sound)
+	for _, e := range entityManager.FilterByMask(components.MaskSound) {
+		sound := e.Get(components.MaskSound).(*components.Sound)
 		fileName := sound.Filename
 		if fileName == "" || !sound.IsEnabled {
 			continue

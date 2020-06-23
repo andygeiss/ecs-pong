@@ -22,11 +22,11 @@ func NewScore(winScore int32) ecs.System {
 // Process ...
 func (s *score) Process(entityManager *ecs.EntityManager) (state int) {
 	scoreboard := entityManager.Get("scoreboard")
-	score := scoreboard.Get("score").(*components.Score)
-	scoreboardText := scoreboard.Get("text").(*components.Text)
+	score := scoreboard.Get(components.MaskScore).(*components.Score)
+	scoreboardText := scoreboard.Get(components.MaskText).(*components.Text)
 	status := entityManager.Get("status")
-	timeout := status.Get("timeout").(*components.Timeout)
-	statusText := status.Get("text").(*components.Text)
+	timeout := status.Get(components.MaskTimeout).(*components.Timeout)
+	statusText := status.Get(components.MaskText).(*components.Text)
 	if score.Enemy >= s.winScore {
 		statusText.Content = "Enemy Wins!"
 		statusText.Color = 0xff0000ff // red

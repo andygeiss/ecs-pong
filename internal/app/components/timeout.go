@@ -8,7 +8,7 @@ type Timeout struct {
 	Duration     time.Duration
 }
 
-// Name ...
-func (t *Timeout) Name() string {
-	return "timeout"
+// Mask ...
+func (i *Timeout) Mask() uint64 {
+	return MaskTimeout
 }

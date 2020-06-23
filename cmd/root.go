@@ -41,7 +41,7 @@ var rootCmd = &cobra.Command{
 			// pixel.NewAudio(),
 			 raylib.NewAudio(),
 			systems.NewMovement(),
-			// pixel.NewRendering(windowWidth, windowHeight, title),
+			// pixel.New2DRendering(windowWidth, windowHeight, title),
 			 raylib.NewRendering(windowWidth, windowHeight, title),
 		)
 		engine := ecs.NewEngine(

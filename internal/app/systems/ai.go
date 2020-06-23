@@ -16,7 +16,7 @@ func NewAI() ecs.System {
 // Process ...
 func (s *ai) Process(entityManager *ecs.EntityManager) (state int) {
 	ball := entityManager.Get("ball")
-	for _, e := range entityManager.FilterBy("ai", "position", "velocity") {
+	for _, e := range entityManager.FilterByMask(components.MaskAI | components.MaskPosition | components.MaskVelocity) {
 		s.handleBallPosition(e, ball)
 	}
 	return ecs.StateEngineContinue
@@ -29,10 +29,10 @@ func (s *ai) Setup() {}
 func (s *ai) Teardown() {}
 
 func (s *ai) handleBallPosition(entity, ball *ecs.Entity) {
-	ai := entity.Get("ai").(*components.AI)
-	position := entity.Get("position").(*components.Position)
-	velocity := entity.Get("velocity").(*components.Velocity)
-	ballPosition := ball.Get("position").(*components.Position)
+	ai := entity.Get(components.MaskAI).(*components.AI)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	velocity := entity.Get(components.MaskVelocity).(*components.Velocity)
+	ballPosition := ball.Get(components.MaskPosition).(*components.Position)
 	if position.Y+velocity.Y < ballPosition.Y {
 		ai.Down = true
 		ai.Up = false

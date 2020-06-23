@@ -18,7 +18,7 @@ type rendering struct {
 	done         chan bool
 }
 
-// NewRendering ...
+// New2DRendering ...
 func NewRendering(width, height int32, title string) ecs.System {
 	return &rendering{
 		background:   rl.Beige,
@@ -39,22 +39,22 @@ func (s *rendering) Process(entityManager *ecs.EntityManager) (state int) {
 	rl.BeginMode2D(s.camera)
 	rl.ClearBackground(s.background)
 	// Render all entities with a position and size.
-	for _, e := range entityManager.FilterBy("position", "size") {
+	for _, e := range entityManager.FilterByMask(components.MaskPosition | components.MaskSize) {
 		isTexturePresent := s.renderTextureIfPresent(e)
 		if !isTexturePresent {
 			s.renderBoundingBox(e)
 		}
 	}
 	// Fadeout text if timeout is reached.
-	for _, e := range entityManager.FilterBy("text", "timeout") {
-		text := e.Get("text").(*components.Text)
-		timeout := e.Get("timeout").(*components.Timeout)
+	for _, e := range entityManager.FilterByMask(components.MaskText | components.MaskTimeout) {
+		text := e.Get(components.MaskText).(*components.Text)
+		timeout := e.Get(components.MaskTimeout).(*components.Timeout)
 		if time.Since(timeout.CreationTime) > timeout.Duration {
 			text.Content = ""
 		}
 	}
 	// Ensure that text will always drawn on top.
-	for _, e := range entityManager.FilterBy("text") {
+	for _, e := range entityManager.FilterByMask(components.MaskText) {
 		s.renderTextIfPresent(e)
 	}
 	s.toggleFullscreenIfPresent()
@@ -87,8 +87,8 @@ func (s *rendering) Teardown() {
 }
 
 func (s *rendering) renderBoundingBox(entity *ecs.Entity) {
-	position := entity.Get("position").(*components.Position)
-	size := entity.Get("size").(*components.Size)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	size := entity.Get(components.MaskSize).(*components.Size)
 	rl.DrawRectangleLines(
 		int32(position.X),
 		int32(position.Y),
@@ -99,10 +99,10 @@ func (s *rendering) renderBoundingBox(entity *ecs.Entity) {
 }
 
 func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
-	position := entity.Get("position").(*components.Position)
-	size := entity.Get("size").(*components.Size)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	size := entity.Get(components.MaskSize).(*components.Size)
 	// Return if text is not present.
-	text := entity.Get("text")
+	text := entity.Get(components.MaskText)
 	if text == nil {
 		return false
 	}
@@ -140,10 +140,10 @@ func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
 }
 
 func (s *rendering) renderTextureIfPresent(entity *ecs.Entity) (present bool) {
-	position := entity.Get("position").(*components.Position)
-	size := entity.Get("size").(*components.Size)
+	position := entity.Get(components.MaskPosition).(*components.Position)
+	size := entity.Get(components.MaskSize).(*components.Size)
 	// Return if texture is not present.
-	texture := entity.Get("texture")
+	texture := entity.Get(components.MaskTexture)
 	if texture == nil {
 		return false
 	}

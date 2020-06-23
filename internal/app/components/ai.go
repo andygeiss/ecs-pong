@@ -6,7 +6,7 @@ type AI struct {
 	Up   bool
 }
 
-// Name ...
-func (i *AI) Name() string {
-	return "ai"
+// Mask ...
+func (i *AI) Mask() uint64 {
+	return MaskAI
 }

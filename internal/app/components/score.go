@@ -6,7 +6,7 @@ type Score struct {
 	Player int32
 }
 
-// Name ...
-func (s *Score) Name() string {
-	return "score"
+// Mask ...
+func (i *Score) Mask() uint64 {
+	return MaskScore
 }

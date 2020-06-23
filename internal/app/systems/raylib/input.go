@@ -16,7 +16,7 @@ func NewInput() ecs.System {
 
 // Process ...
 func (s *input) Process(entityManager *ecs.EntityManager) (state int) {
-	for _, e := range entityManager.FilterBy("input", "velocity") {
+	for _, e := range entityManager.FilterByMask(components.MaskInput | components.MaskVelocity) {
 		s.handleInput(e)
 	}
 	return ecs.StateEngineContinue
@@ -29,8 +29,8 @@ func (s *input) Setup() {}
 func (s *input) Teardown() {}
 
 func (s *input) handleInput(e *ecs.Entity) {
-	input := e.Get("input").(*components.Input)
-	velocity := e.Get("velocity").(*components.Velocity)
+	input := e.Get(components.MaskInput).(*components.Input)
+	velocity := e.Get(components.MaskVelocity).(*components.Velocity)
 	input.Down = rl.IsKeyDown(rl.KeyS)
 	input.Up = rl.IsKeyDown(rl.KeyW)
 	velocity.Y = 0

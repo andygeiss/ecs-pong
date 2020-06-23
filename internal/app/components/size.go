@@ -6,7 +6,7 @@ type Size struct {
 	Height float32
 }
 
-// Name ...
-func (s *Size) Name() string {
-	return "size"
+// Mask ...
+func (i *Size) Mask() uint64 {
+	return MaskSize
 }
