@@ -22,7 +22,7 @@ func NewCollision(windowWidth, windowHeight int32) ecs.System {
 // Process ...
 func (s *collision) Process(entityManager *ecs.EntityManager) (state int) {
 	for _, e := range entityManager.FilterByMask(components.MaskPosition | components.MaskSize | components.MaskVelocity) {
-		switch e.Id {
+		switch e.ID() {
 		case "ball":
 			enemy := entityManager.Get("enemy")
 			player := entityManager.Get("player")
