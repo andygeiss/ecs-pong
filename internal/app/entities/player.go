@@ -7,9 +7,8 @@ import (
 
 // NewPlayer creates a new player with an id on a specific position x and y with a custom width and height.
 func NewPlayer(id string, x, y, width, height float32) (player *ecs.Entity) {
-	return &ecs.Entity{
-		Id: id,
-		Components: []ecs.Component{
+	return ecs.NewEntity(id,
+		[]ecs.Component{
 			&components.Position{
 				X: x,
 				Y: y,
@@ -28,6 +27,5 @@ func NewPlayer(id string, x, y, width, height float32) (player *ecs.Entity) {
 			&components.Velocity{
 				Y: 0,
 			},
-		},
-	}
+		})
 }

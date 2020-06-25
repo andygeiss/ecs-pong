@@ -7,9 +7,9 @@ import (
 
 // NewEnemy creates a new player with an id on a specific position x and y with a custom width and height.
 func NewEnemy(id string, x, y, width, height float32) (enemy *ecs.Entity) {
-	return &ecs.Entity{
-		Id: id,
-		Components: []ecs.Component{
+	return ecs.NewEntity(
+		id,
+		[]ecs.Component{
 			&components.AI{
 				Down: true,
 			},
@@ -27,6 +27,5 @@ func NewEnemy(id string, x, y, width, height float32) (enemy *ecs.Entity) {
 			&components.Velocity{
 				Y: 0,
 			},
-		},
-	}
+		})
 }

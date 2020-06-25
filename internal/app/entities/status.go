@@ -8,9 +8,8 @@ import (
 
 // NewStatus creates a new status message with an id on a specific position x and y with a custom width and height.
 func NewStatus(id string, x, y, width, height float32) (player *ecs.Entity) {
-	return &ecs.Entity{
-		Id: id,
-		Components: []ecs.Component{
+	return ecs.NewEntity(id,
+		[]ecs.Component{
 			&components.Position{
 				X: x,
 				Y: y,
@@ -28,6 +27,5 @@ func NewStatus(id string, x, y, width, height float32) (player *ecs.Entity) {
 				CreationTime: time.Now(),
 				Duration:     time.Second * 3,
 			},
-		},
-	}
+		})
 }

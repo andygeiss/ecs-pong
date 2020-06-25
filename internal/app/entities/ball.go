@@ -7,9 +7,8 @@ import (
 
 // NewBall creates a new ball with an id on a specific position x and y with a custom width and height.
 func NewBall(id string, x, y, width, height float32) (ball *ecs.Entity) {
-	return &ecs.Entity{
-		Id: id,
-		Components: []ecs.Component{
+	return ecs.NewEntity(id,
+		[]ecs.Component{
 			&components.Position{
 				X: x,
 				Y: y,
@@ -24,7 +23,7 @@ func NewBall(id string, x, y, width, height float32) (ball *ecs.Entity) {
 				},
 				Filename:  "",
 				IsEnabled: true,
-				Volume: 1.0,
+				Volume:    1.0,
 			},
 			&components.Texture{
 				Filename:  "assets/textures/ball.png",
@@ -34,6 +33,5 @@ func NewBall(id string, x, y, width, height float32) (ball *ecs.Entity) {
 				X: -3,
 				Y: 2,
 			},
-		},
-	}
+		})
 }
